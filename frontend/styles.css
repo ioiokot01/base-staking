@@ -162,6 +162,24 @@ body {
   color: var(--muted);
 }
 
+.btn-link {
+  display: inline-block;
+  margin-top: 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  border-radius: 10px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-link:hover {
+  background: var(--panel-2);
+}
+
 .status {
   min-height: 1.2em;
   text-align: center;

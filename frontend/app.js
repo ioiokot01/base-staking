@@ -47,6 +47,7 @@ const els = {
   unstakeInput: document.getElementById("unstakeInput"),
   unstakeBtn: document.getElementById("unstakeBtn"),
   status: document.getElementById("status"),
+  watchBtn: document.getElementById("watchBtn"),
 };
 
 // ---------------------------------------------------------------------------
@@ -94,6 +95,7 @@ async function connect() {
     contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
     els.dash.classList.remove("hidden");
     els.actions.classList.remove("hidden");
+    els.watchBtn.classList.remove("hidden");
 
     await refresh();
     ["Staked", "Unstaked", "Claimed"].forEach((e) =>
@@ -201,10 +203,28 @@ async function send(action, label) {
 // UI wiring
 // ---------------------------------------------------------------------------
 
+// Ask the wallet to track the BSR reward token so it shows in the asset list.
+async function watchAsset() {
+  if (!window.ethereum) return;
+  try {
+    await window.ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20",
+        options: { address: CONTRACT_ADDRESS, symbol: "BSR", decimals: 18 },
+      },
+    });
+    setStatus("BSR added to your wallet.", "ok");
+  } catch (err) {
+    setStatus(err.shortMessage || err.message || "Could not add token.", "error");
+  }
+}
+
 els.connectBtn.addEventListener("click", connect);
 els.stakeBtn.addEventListener("click", stake);
 els.unstakeBtn.addEventListener("click", unstake);
 els.claimBtn.addEventListener("click", claim);
+els.watchBtn.addEventListener("click", watchAsset);
 
 if (window.ethereum) {
   window.ethereum.on?.("accountsChanged", () => window.location.reload());
