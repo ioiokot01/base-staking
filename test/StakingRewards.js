@@ -176,4 +176,41 @@ describe("StakingRewards", function () {
       expect(after).to.equal(before); // nothing staked => no new rewards
     });
   });
+
+  describe("More coverage", function () {
+    it("sums totalStaked across stakers", async function () {
+      const { staking, alice, bob } = await deploy();
+      await staking.connect(alice).stake({ value: ethers.parseEther("1") });
+      await staking.connect(bob).stake({ value: ethers.parseEther("2") });
+      expect(await staking.totalStaked()).to.equal(ethers.parseEther("3"));
+    });
+
+    it("keeps accruing on the remainder after a partial unstake", async function () {
+      const { staking, alice } = await deploy();
+      await staking.connect(alice).stake({ value: ethers.parseEther("2") });
+      await time.increase(DAY); // ~2 tokens earned so far
+      await staking.connect(alice).unstake(ethers.parseEther("1")); // settles, 1 ETH left
+      await time.increase(DAY); // ~1 more token on the remaining 1 ETH
+
+      const earned = await staking.earned(alice.address);
+      expect(earned).to.be.closeTo(
+        ethers.parseEther("3"),
+        ethers.parseEther("0.01")
+      );
+    });
+
+    it("lets a user claim more than once over time", async function () {
+      const { staking, alice } = await deploy();
+      await staking.connect(alice).stake({ value: ethers.parseEther("1") });
+      await time.increase(DAY);
+      await staking.connect(alice).claim();
+      await time.increase(DAY);
+      await staking.connect(alice).claim();
+      // Two days of 1 ETH => ~2 BSR total.
+      expect(await staking.balanceOf(alice.address)).to.be.closeTo(
+        ethers.parseEther("2"),
+        ethers.parseEther("0.02")
+      );
+    });
+  });
 });
