@@ -48,6 +48,7 @@ const els = {
   unstakeBtn: document.getElementById("unstakeBtn"),
   status: document.getElementById("status"),
   watchBtn: document.getElementById("watchBtn"),
+  rate: document.getElementById("rate"),
 };
 
 // ---------------------------------------------------------------------------
@@ -128,6 +129,9 @@ async function refresh() {
     els.staked.textContent = fmtEth(stakedAmt) + " ETH";
     els.totalStaked.textContent = fmtEth(total) + " ETH";
     els.bsr.textContent = fmtEth(bsr) + " BSR";
+    // Reward rate is 1 BSR per ETH per day, so daily yield = staked (in ETH).
+    els.rate.textContent =
+      stakedAmt > 0n ? `≈ ${fmtEth(stakedAmt)} BSR / day` : "";
     els.claimBtn.disabled = earned === 0n;
     renderEarned();
   } catch (err) {

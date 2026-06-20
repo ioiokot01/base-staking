@@ -75,6 +75,13 @@ body {
   margin-bottom: 14px;
 }
 
+.rate {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
 .stats {
   display: flex;
   gap: 12px;
