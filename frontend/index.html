@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staking · Base</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <h1>💎 Staking Rewards</h1>
+        <p class="subtitle">Stake ETH, earn BSR tokens over time on Base.</p>
+        <button id="connectBtn" class="btn">Connect Wallet</button>
+        <p id="account" class="account hidden"></p>
+      </header>
+
+      <section id="dash" class="dash hidden">
+        <div class="earned-card">
+          <span class="earned-label">Claimable rewards</span>
+          <span id="earned" class="earned-value">0 BSR</span>
+          <button id="claimBtn" class="btn btn-big">Claim</button>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">Your stake</span>
+            <span id="staked" class="stat-value">— ETH</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">BSR balance</span>
+            <span id="bsr" class="stat-value">—</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Total staked</span>
+            <span id="totalStaked" class="stat-value">— ETH</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="actions" class="actions-card hidden">
+        <div class="action">
+          <input id="stakeInput" type="number" min="0" step="0.001" placeholder="Amount (ETH)" />
+          <button id="stakeBtn" class="btn">Stake</button>
+        </div>
+        <div class="action">
+          <input id="unstakeInput" type="number" min="0" step="0.001" placeholder="Amount (ETH)" />
+          <button id="unstakeBtn" class="btn btn-ghost">Unstake</button>
+        </div>
+      </section>
+
+      <p id="status" class="status"></p>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
